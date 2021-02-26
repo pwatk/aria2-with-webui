@@ -1,0 +1,11 @@
+/config/log/aria2/aria2.log {
+	daily
+	rotate 7
+	missingok
+	notifempty
+	compress
+	delaycompress
+	nodateext
+	copytruncate
+	su abc abc
+}
