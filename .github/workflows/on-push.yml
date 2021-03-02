@@ -1,5 +1,4 @@
 name: Build image on push
-
 on:
   push:
     branches:
@@ -7,6 +6,7 @@ on:
     paths:
       - 'root/**'
       - 'Dockerfile'
+  workflow_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest
