@@ -2,6 +2,8 @@ FROM alpine
 
 LABEL maintainer pwatk
 
+ARG OS="linux"
+ARG ARCH="amd64"
 ARG S6_ARCH="amd64"
 
 ENV \
