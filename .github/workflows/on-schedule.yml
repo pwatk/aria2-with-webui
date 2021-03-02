@@ -13,11 +13,11 @@ jobs:
       id: releases
       run: |
         ARIANG_REPO=https://api.github.com/repos/mayswind/AriaNg/releases/latest
-        echo ::set-output name=ariang "$(curl -sX GET "$ARIANG_REPO" | awk '/published_at/{print $4;exit}' FS='[""]')"
+        echo "::set-output name=ariang::$(curl -sX GET $ARIANG_REPO | awk '/published_at/{print $4;exit}' FS='[""]')"
         ARIA2_REPO=https://api.github.com/repos/aria2/aria2/releases/latest
-        echo ::set-output name=aria2 "$(curl -sX GET "$ARIA2_REPO" | awk '/published_at/{print $4;exit}' FS='[""]')"
+        echo "::set-output name=aria2::$(curl -sX GET $ARIA2_REPO | awk '/published_at/{print $4;exit}' FS='[""]')"
         THIS_REPO=https://api.github.com/repos/pwatk/docker-aria2-with-webui/commits/master
-        echo ::set-output name=repo "$(curl -sX GET "$THIS_REPO" | awk '/date/{print $4;exit}' FS='[""]')"
+        echo "::set-output name=repo::$(curl -sX GET $THIS_REPO | awk '/date/{print $4;exit}' FS='[""]')"
     - name: Build image if new release exists
       if: steps.releases.outputs.ariang > steps.releases.outputs.repo || steps.releases.outputs.aria2 > steps.releases.outputs.repo
       uses: docker/build-push-action@v1
