@@ -9,8 +9,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Get versions
-      id: versions
+    - name: Get release dates
+      id: releases
       run: |
         ARIANG_REPO=https://api.github.com/repos/mayswind/AriaNg/releases/latest
         echo ::set-output name=ariang "$(curl -sX GET "$ARIANG_REPO" | awk '/published_at/{print $4;exit}' FS='[""]')"
@@ -18,8 +18,8 @@ jobs:
         echo ::set-output name=aria2 "$(curl -sX GET "$ARIA2_REPO" | awk '/published_at/{print $4;exit}' FS='[""]')"
         THIS_REPO=https://api.github.com/repos/pwatk/docker-aria2-with-webui/commits/master
         echo ::set-output name=repo "$(curl -sX GET "$THIS_REPO" | awk '/date/{print $4;exit}' FS='[""]')"
-    - name: Build image
-      if: steps.versions.outputs.ariang > steps.releases.outputs.repo || steps.versions.outputs.aria2 > steps.releases.outputs.repo
+    - name: Build image if new release exists
+      if: steps.releases.outputs.ariang > steps.releases.outputs.repo || steps.releases.outputs.aria2 > steps.releases.outputs.repo
       uses: docker/build-push-action@v1
       with:
         username: ${{ github.actor }}
