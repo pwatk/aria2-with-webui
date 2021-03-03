@@ -1,4 +1,8 @@
-# [Aria2 with AriaNg web frontend](https://github.com/pwatk/aria2-with-webui)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/mayswind/AriaNg-Native/master/assets/AriaNg.ico" />
+</p>
+
+# Aria2 with AriaNg web frontend
 
 ## Description
 
@@ -6,7 +10,7 @@
 
 ## Features
 
-This project expands on contributions to and borrows from [onisuly/docker-aria2-with-webui](https://github.com/onisuly/docker-aria2-with-webui) as well as being influenced by the excellent images provided by [Linuxserver.io](https://www.linuxserver.io/).
+This project expands on my contributions to (and borrows from) [onisuly/docker-aria2-with-webui](https://github.com/onisuly/docker-aria2-with-webui) as well as being influenced by the excellent images provided by [Linuxserver.io](https://www.linuxserver.io/).
 
 Features include daily automatic updates of BitTorrent trackers, log retention and rotation and the use of [s6-overlay](https://github.com/just-containers/s6-overlay) to better manage multiple processes.
 
@@ -41,7 +45,7 @@ services:
       - IPV6=true                       # optional
 ```
 
-# Environment variables
+## Environment variables
 
 | Variable | Function |
 | :----: | --- |
