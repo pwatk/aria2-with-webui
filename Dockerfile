@@ -10,9 +10,9 @@ ENV \
 PS1="$(whoami)@$(hostname):$(pwd)\\$ " \
 HOME="/root" \
 TERM="xterm" \
-IPV6="false" \
+BT_TRACKER="true" \
 BT_SEEDING="true" \
-BT_TRACKER="true"
+IPV6="false"
 
 RUN \
  echo "**** install build packages ****" && \

@@ -4,7 +4,11 @@ if [ "$BT_TRACKER" = "false" ]; then
 	exit 0
 fi
 
-url="https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt"
+if [ -n "$BT_TRACKER_URL" ]; then
+	url="$BT_TRACKER_URL"
+else
+	url="https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt"
+fi
 
 wget --spider "$url" 2>/dev/null
 
