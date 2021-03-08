@@ -2,10 +2,6 @@ FROM alpine
 
 LABEL maintainer pwatk
 
-ARG OS="linux"
-ARG ARCH="amd64"
-ARG S6_ARCH="amd64"
-
 ENV \
 PS1="$(whoami)@$(hostname):$(pwd)\\$ " \
 HOME="/root" \
@@ -62,23 +58,32 @@ RUN \
  sed -i "s|logrotate /etc/logrotate.conf|logrotate /etc/logrotate.conf -s /config/log/logrotate.status|" \
 	/etc/periodic/daily/logrotate && \
  echo "**** install s6-overlay ****" && \
- S6_VERSION=$(curl -sX GET "https://api.github.com/repos/just-containers/s6-overlay/releases/latest" \
+ QEMU_ARCH="$(uname -m)" && \
+ case "${QEMU_ARCH}" in \
+	x86_64) S6_ARCH='amd64';; \
+	aarch64) S6_ARCH='aarch64';; \
+	armv7l) S6_ARCH='armhf';; \
+	*) echo "!!! unsupported architecture - $QEMU_ARCH !!!"; exit 1 ;; \
+ esac && \
+ S6_RELEASE=$(curl -sX GET "https://api.github.com/repos/just-containers/s6-overlay/releases/latest" \
 	| awk '/tag_name/{print $4;exit}' FS='[""]') && \
  curl \
 	-o /tmp/s6-overlay-${S6_ARCH}.tar.gz -L \
-	https://github.com/just-containers/s6-overlay/releases/download/${S6_VERSION}/s6-overlay-${S6_ARCH}.tar.gz && \
+	https://github.com/just-containers/s6-overlay/releases/download/${S6_RELEASE}/s6-overlay-${S6_ARCH}.tar.gz && \
  tar xzf /tmp/s6-overlay-${S6_ARCH}.tar.gz -C / && \
  echo "**** install aria2 ****" && \
- ARIA2_VERSION=$(curl -sX GET "https://api.github.com/repos/aria2/aria2/releases/latest" \
+ ARIA2_RELEASE=$(curl -sX GET "https://api.github.com/repos/aria2/aria2/releases/latest" \
 	| awk '/tag_name/{print $4;exit}' FS='[""]') && \
  curl \
 	-o /tmp/aria2.tar.gz -L \
-	https://github.com/aria2/aria2/releases/download/${ARIA2_VERSION}/${ARIA2_VERSION/release/aria2}.tar.gz && \
+	https://github.com/aria2/aria2/releases/download/${ARIA2_RELEASE}/${ARIA2_RELEASE/release/aria2}.tar.gz && \
  tar xzf /tmp/aria2.tar.gz -C /tmp/ && \
  ( \
-	 cd /tmp/${ARIA2_VERSION/release/aria2} && \
+	 cd /tmp/${ARIA2_RELEASE/release/aria2} && \
 	 autoreconf -i && \
-	 ./configure CXXFLAGS="-Os -s" \
+	 ./configure \
+		CFLAGS="-Os -s" \
+		CXXFLAGS="-Os -s" \
 		--prefix=/usr \
 		--sysconfdir=/etc \
 		--mandir=/usr/share/man \
