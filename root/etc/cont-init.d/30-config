@@ -53,3 +53,4 @@ chmod -R +r /config/log
 chmod 0600 /config/netrc
 chmod -R 0644 /etc/logrotate.d
 chmod +x /etc/periodic/daily/bt-tracker
+
