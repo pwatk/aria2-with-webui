@@ -96,11 +96,11 @@ RUN \
  ) && \
  echo "**** install AriaNg ****" && \
  mkdir -p /app/AriaNg && \
- ARIANG_VERSION=$(curl -sX GET "https://api.github.com/repos/mayswind/AriaNg/releases/latest" \
+ ARIANG_RELEASE=$(curl -sX GET "https://api.github.com/repos/mayswind/AriaNg/releases/latest" \
 	| awk '/tag_name/{print $4;exit}' FS='[""]') && \
  curl \
 	-o /tmp/AriaNg.zip -L \
-	https://github.com/mayswind/AriaNg/releases/download/${ARIANG_VERSION}/AriaNg-${ARIANG_VERSION}.zip && \
+	https://github.com/mayswind/AriaNg/releases/download/${ARIANG_RELEASE}/AriaNg-${ARIANG_RELEASE}.zip && \
  unzip /tmp/AriaNg.zip -d /app/AriaNg && \
  echo "**** cleanup ****" && \
  rm -rf /tmp/* && \
