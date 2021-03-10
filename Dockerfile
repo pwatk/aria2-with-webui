@@ -8,50 +8,52 @@ HOME="/root" \
 TERM="xterm" \
 BT_TRACKER="true" \
 BT_SEEDING="true" \
-IPV6="false"
+IPV6="false" \
+WEBUI="AriaNg"
 
 RUN \
  echo "**** install build packages ****" && \
  apk add --no-cache --virtual=build-dependencies \
-	unzip \
-	git \
-	build-base \
-	automake \
 	autoconf \
-	gettext-dev \
-	libtool \
-	gnutls-dev \
-	expat-dev \
-	sqlite-dev \
+	automake \
+	build-base \
 	c-ares-dev \
-	zlib-dev \
+	cppunit-dev \
+	gettext-dev \
+	git \
+	gnutls-dev \
+	libssh2-dev \
+	libtool \
+	libxml2-dev \
 	nettle-dev \
-	libssh2-dev && \
+	sqlite-dev \
+	unzip \
+	zlib-dev && \
  echo "**** install runtime packages ****" && \
  apk add --no-cache \
-	tzdata \
 	bash \
-	darkhttpd \
-	ca-certificates \
-	gnutls \
-	expat \
-	sqlite-libs \
 	c-ares \
-	zlib \
-	nettle \
-	libssh2 \
-	libgcc \
-	libstdc++ \
-	curl \
+	ca-certificates \
 	coreutils \
+	curl \
+	darkhttpd \
+	gnutls \
+	libgcc \
+	libssh2 \
+	libstdc++ \
+	libxml2 \	
+	logrotate \
+	nettle \
 	procps \
 	shadow \
-	logrotate && \
+	sqlite-libs \
+	tzdata \
+	zlib && \
  echo "**** create user and directories ****" && \
  useradd -u 911 -U -G users -d /config -s /bin/false abc && \
  mkdir -p \
 	/app \
-	/config \
+	/config/log \
 	/defaults && \
  echo "**** fix logrotate ****" && \
  sed -i "s|/var/log/messages {}.*| |" /etc/logrotate.conf && \
@@ -71,6 +73,19 @@ RUN \
 	-o /tmp/s6-overlay-${S6_ARCH}.tar.gz -L \
 	https://github.com/just-containers/s6-overlay/releases/download/${S6_RELEASE}/s6-overlay-${S6_ARCH}.tar.gz && \
  tar xzf /tmp/s6-overlay-${S6_ARCH}.tar.gz -C / && \
+ echo "**** install AriaNg ****" && \
+ mkdir -p /app/AriaNg && \
+ ARIANG_RELEASE=$(curl -sX GET "https://api.github.com/repos/mayswind/AriaNg/releases/latest" \
+	| awk '/tag_name/{print $4;exit}' FS='[""]') && \
+ curl \
+	-o /tmp/AriaNg.zip -L \
+	https://github.com/mayswind/AriaNg/releases/download/${ARIANG_RELEASE}/AriaNg-${ARIANG_RELEASE}.zip && \
+ unzip /tmp/AriaNg.zip -d /app/AriaNg && \
+ echo "**** install webui-aria2 ****" && \
+ git clone https://github.com/ziahamza/webui-aria2 /tmp/webui-aria2 && \
+ cp -a /tmp/webui-aria2/docs /app/webui-aria2 && \
+ cp -a /tmp/webui-aria2/favicon.ico /app/webui-aria2/favicon.ico && \
+ sed -i "s|../favicon.ico|./favicon.ico|g" /app/webui-aria2/index.html && \
  echo "**** install aria2 ****" && \
  ARIA2_RELEASE=$(curl -sX GET "https://api.github.com/repos/aria2/aria2/releases/latest" \
 	| awk '/tag_name/{print $4;exit}' FS='[""]') && \
@@ -94,14 +109,6 @@ RUN \
 	 make -j $(getconf _NPROCESSORS_ONLN) && \
 	 install -Dm 0755 src/aria2c /usr/bin/aria2c \
  ) && \
- echo "**** install AriaNg ****" && \
- mkdir -p /app/AriaNg && \
- ARIANG_RELEASE=$(curl -sX GET "https://api.github.com/repos/mayswind/AriaNg/releases/latest" \
-	| awk '/tag_name/{print $4;exit}' FS='[""]') && \
- curl \
-	-o /tmp/AriaNg.zip -L \
-	https://github.com/mayswind/AriaNg/releases/download/${ARIANG_RELEASE}/AriaNg-${ARIANG_RELEASE}.zip && \
- unzip /tmp/AriaNg.zip -d /app/AriaNg && \
  echo "**** cleanup ****" && \
  rm -rf /tmp/* && \
  apk del --purge build-dependencies
