@@ -4,8 +4,6 @@
 
 [Aria2](https://github.com/aria2/aria2) is a command-line download utility that supports HTTP(S), FTP, SFTP and BitTorrent. [AriaNg](https://github.com/mayswind/AriaNg) and [webui-aria2](https://github.com/ziahamza/webui-aria2) are web interfaces making Aria2 easier to use
 
-## Features
-
 This project expands on my contributions to (and borrows from) [onisuly/docker-aria2-with-webui](https://github.com/onisuly/docker-aria2-with-webui) as well as being influenced by the excellent images provided by [Linuxserver.io](https://www.linuxserver.io/).
 
 Features include daily automatic updates of BitTorrent trackers, log retention and rotation, choice of web interface and [s6-overlay](https://github.com/just-containers/s6-overlay) to better manage multiple processes.
@@ -41,6 +39,15 @@ services:
       - IPV6=true                       # optional
       - WEBUI=webui-aria2               # optional
 ```
+
+## Port numbers
+
+| Port(s) | Function |
+| :----: | --- |
+| `80` | Web interface |
+| `6800` | [RPC listening port](https://aria2.github.io/manual/en/html/aria2c.html#cmdoption-rpc-listen-port) |
+| `6881-6999` | [BitTorrent listening ports](https://aria2.github.io/manual/en/html/aria2c.html#cmdoption-listen-port) |
+| `6881-6999/udp` | [DHT listening ports](https://aria2.github.io/manual/en/html/aria2c.html#cmdoption-dht-listen-port) |
 
 ## Environment variables
 
