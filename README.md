@@ -2,11 +2,11 @@
 
 ## Description
 
-[Aria2](https://github.com/aria2/aria2) is a command-line download utility that supports HTTP(S), FTP, SFTP and BitTorrent. [AriaNg](https://github.com/mayswind/AriaNg) and [webui-aria2](https://github.com/ziahamza/webui-aria2) are web interfaces making Aria2 easier to use
+[Aria2](https://github.com/aria2/aria2) is a command-line download utility that supports HTTP(S), FTP, SFTP and BitTorrent. [AriaNg](https://github.com/mayswind/AriaNg) and [webui-aria2](https://github.com/ziahamza/webui-aria2) are web interfaces making aria2 easier to use.
 
 This project expands on my contributions to (and borrows from) [onisuly/docker-aria2-with-webui](https://github.com/onisuly/docker-aria2-with-webui) as well as being influenced by the excellent images provided by [Linuxserver.io](https://www.linuxserver.io/).
 
-Features include daily automatic updates of BitTorrent trackers, log retention and rotation, choice of web interface and [s6-overlay](https://github.com/just-containers/s6-overlay) to better manage multiple processes.
+Features include: BitTorrent trackers updated daily, log retention and rotation, choice of web interface and [s6-overlay](https://github.com/just-containers/s6-overlay) to better manage multiple processes.
 
 ## [Docker Compose](https://docs.docker.com/compose/compose-file/compose-file-v3/)
 
@@ -37,8 +37,14 @@ services:
       - RPC_CERT=/path/to/fullchain.pem # optional
       - RPC_KEY=/path/to/privkey.pem    # optional
       - IPV6=true                       # optional
-      - WEBUI=webui-aria2               # optional
 ```
+
+## Version tags
+
+| Tag(s) | Description |
+| :----: | --- |
+| `AriaNg` `latest` | Latest release from aria2 and AriaNg |
+| `webui-aria2` | Latest release from aria2 and git commit from webui-aria2  | 	
 
 ## Port numbers
 
@@ -62,7 +68,6 @@ services:
 | `BT_TRACKER` | Enable or disable daily automatic updates of [BitTorrent trackers](https://aria2.github.io/manual/en/html/aria2c.html#cmdoption-bt-tracker "--bt-tracker=<URI>[,...]"). Available values: *true or false*. **Default: true** |
 | `BT_TRACKER_URL` | Specify a URL from which to download a BitTorrent trackers list (comma or newline seperated). **Default: [trackers_best.txt](https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt) from [ngosang/trackerslist](https://github.com/ngosang/trackerslist)**
 | `BT_SEEDING` | Enable or disable [BitTorrent seeding](https://aria2.github.io/manual/en/html/aria2c.html#cmdoption-seed-time "--seed-time=0"). Available values: *true or false*. **Default: true** |
-| `RPC_CERT` | [Location](https://docs.docker.com/storage/bind-mounts/) of [RPC certificate](https://aria2.github.io/manual/en/html/aria2c.html#cmdoption-rpc-certificate "--rpc-certificate=<FILE>"). It is recommended to use a reverse proxy to secure both Aria2 and AriaNg instead. A configuration file for [SWAG](https://github.com/linuxserver/docker-swag) can be found in the proxy-confs folder. **Default: undefined** |
-| `RPC_KEY` | [Location](https://docs.docker.com/storage/bind-mounts/) of [RPC private key](https://aria2.github.io/manual/en/html/aria2c.html#cmdoption-rpc-private-key "--rpc-private-key=<FILE>"). It is recommended to use a reverse proxy to secure both Aria2 and AriaNg instead. A configuration file for [SWAG](https://github.com/linuxserver/docker-swag) can be found in the proxy-confs folder. **Default: undefined** |
+| `RPC_CERT` | [Location](https://docs.docker.com/storage/bind-mounts/) of [RPC certificate](https://aria2.github.io/manual/en/html/aria2c.html#cmdoption-rpc-certificate "--rpc-certificate=<FILE>"). It is recommended to use a reverse proxy to secure both Aria2 and AriaNg instead. A configuration file for [SWAG](https://github.com/linuxserver/docker-swag) can be found in the [proxy-confs folder](https://github.com/pwatk/docker-aria2-with-webui/tree/master/proxy-confs). **Default: undefined** |
+| `RPC_KEY` | [Location](https://docs.docker.com/storage/bind-mounts/) of [RPC private key](https://aria2.github.io/manual/en/html/aria2c.html#cmdoption-rpc-private-key "--rpc-private-key=<FILE>"). It is recommended to use a reverse proxy to secure both Aria2 and AriaNg instead. A configuration file for [SWAG](https://github.com/linuxserver/docker-swag) can be found in the [proxy-confs folder](https://github.com/pwatk/docker-aria2-with-webui/tree/master/proxy-confs). **Default: undefined** |
 | `IPV6` | Enable or disable IPv6 support. Available values: *true or false*. **Default: false** |
-| `WEBUI` | Specify which web interface to use. Available values: *AriaNg or webui-aria2*. **Default: AriaNg** |
