@@ -2,7 +2,7 @@ name: Build webui-aria2 image on push
 on:
   push:
     branches:
-      - webui-aria2
+      - master
     paths:
       - 'root/**'
       - 'Dockerfile.webui-aria2'
