@@ -43,7 +43,7 @@ services:
 
 | Tag(s) | Description |
 | :----: | --- |
-| `AriaNg` `latest` | Latest release from aria2 and AriaNg |
+| `AriaNg`, `latest` | Latest release from aria2 and AriaNg |
 | `webui-aria2` | Latest release from aria2 and git commit from webui-aria2  | 	
 
 ## Port numbers
