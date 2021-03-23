@@ -1,4 +1,4 @@
-name: Build AriaNg image on push
+name: Build image on push
 on:
   push:
     branches:
@@ -25,7 +25,5 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: |
-            ghcr.io/pwatk/aria2-with-webui:latest
-            ghcr.io/pwatk/aria2-with-webui:AriaNg
+          tags: ghcr.io/pwatk/aria2-with-webui:latest
           platforms: linux/amd64,linux/arm64/v8,linux/arm/v7
