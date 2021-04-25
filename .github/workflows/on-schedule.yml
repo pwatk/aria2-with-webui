@@ -19,19 +19,19 @@ jobs:
           THIS_REPO=https://api.github.com/repos/pwatk/docker-aria2-with-webui/commits/master
           echo "::set-output name=repo::$(curl -sX GET $THIS_REPO | awk '/date/{print $4;exit}' FS='[""]')"
       - name: Set up QEMU
-        if: >-
+        if: >
           steps.releases.outputs.ariang > steps.releases.outputs.repo || 
           steps.releases.outputs.aria2 > steps.releases.outputs.repo || 
           steps.releases.outputs.webui > steps.releases.outputs.repo
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
-        if: >-
+        if: >
           steps.releases.outputs.ariang > steps.releases.outputs.repo || 
           steps.releases.outputs.aria2 > steps.releases.outputs.repo || 
           steps.releases.outputs.webui > steps.releases.outputs.repo
         uses: docker/setup-buildx-action@v1
       - name: Login to GHCR
-        if: >-
+        if: >
           steps.releases.outputs.ariang > steps.releases.outputs.repo || 
           steps.releases.outputs.aria2 > steps.releases.outputs.repo || 
           steps.releases.outputs.webui > steps.releases.outputs.repo
@@ -41,7 +41,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GHCR_PAT }}
       - name: Build and push
-        if: >-
+        if: >
           steps.releases.outputs.ariang > steps.releases.outputs.repo || 
           steps.releases.outputs.aria2 > steps.releases.outputs.repo || 
           steps.releases.outputs.webui > steps.releases.outputs.repo
