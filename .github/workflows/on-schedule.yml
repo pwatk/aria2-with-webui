@@ -1,4 +1,4 @@
-name: Build image on schedule
+name: Check for updates
 on:
   schedule:
     - cron: "0 1 * * *"
@@ -7,10 +7,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Check for updates
+      - name: Gather information
         id: tags
         run: |
-          echo "::set-output name=date::$(date +'%Y.%m.%d-%H%m%s')"
+          echo "::set-output name=date::$(date +'%Y.%m.%d-%H%m%S')"
           ARIA2_REPO=https://api.github.com/repos/aria2/aria2/releases/latest
           echo "::set-output name=aria2::$(curl -sX GET $ARIA2_REPO | awk '/published_at/{print $4;exit}' FS='[""]')"
           echo "::set-output name=aria2_tag::$(curl -sX GET $ARIA2_REPO | awk '/tag_name/{print $4;exit}' FS='[""]' | sed 's/release-//')"
@@ -23,20 +23,20 @@ jobs:
           THIS_REPO=https://api.github.com/repos/pwatk/docker-aria2-with-webui/releases/latest
           echo "::set-output name=repo::$(curl -sX GET $THIS_REPO | awk '/published_at/{print $4;exit}' FS='[""]')"
       - name: Set up QEMU
-#        if: steps.tags.outputs.aria2 > steps.tags.outputs.repo || steps.tags.outputs.ariang > steps.tags.outputs.repo || steps.tags.outputs.webui > steps.tags.outputs.repo
+        if: steps.tags.outputs.aria2 > steps.tags.outputs.repo || steps.tags.outputs.ariang > steps.tags.outputs.repo || steps.tags.outputs.webui > steps.tags.outputs.repo
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
-#        if: steps.tags.outputs.aria2 > steps.tags.outputs.repo || steps.tags.outputs.ariang > steps.tags.outputs.repo || steps.tags.outputs.webui > steps.tags.outputs.repo
+        if: steps.tags.outputs.aria2 > steps.tags.outputs.repo || steps.tags.outputs.ariang > steps.tags.outputs.repo || steps.tags.outputs.webui > steps.tags.outputs.repo
         uses: docker/setup-buildx-action@v1
       - name: Login to GHCR
-#        if: steps.tags.outputs.aria2 > steps.tags.outputs.repo || steps.tags.outputs.ariang > steps.tags.outputs.repo || steps.tags.outputs.webui > steps.tags.outputs.repo
+        if: steps.tags.outputs.aria2 > steps.tags.outputs.repo || steps.tags.outputs.ariang > steps.tags.outputs.repo || steps.tags.outputs.webui > steps.tags.outputs.repo
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GHCR_PAT }}
       - name: Build and push
-#        if: steps.tags.outputs.aria2 > steps.tags.outputs.repo || steps.tags.outputs.ariang > steps.tags.outputs.repo || steps.tags.outputs.webui > steps.tags.outputs.repo
+        if: steps.tags.outputs.aria2 > steps.tags.outputs.repo || steps.tags.outputs.ariang > steps.tags.outputs.repo || steps.tags.outputs.webui > steps.tags.outputs.repo
         uses: docker/build-push-action@v2
         with:
           push: true
@@ -45,12 +45,12 @@ jobs:
             ghcr.io/pwatk/aria2-with-webui:${{ steps.tags.outputs.date }}
           platforms: linux/amd64,linux/arm64/v8,linux/arm/v7
       - name: Create new release
-#        if: steps.tags.outputs.aria2 > steps.tags.outputs.repo || steps.tags.outputs.ariang > steps.tags.outputs.repo || steps.tags.outputs.webui > steps.tags.outputs.repo
+        if: steps.tags.outputs.aria2 > steps.tags.outputs.repo || steps.tags.outputs.ariang > steps.tags.outputs.repo || steps.tags.outputs.webui > steps.tags.outputs.repo
         uses: meeDamian/github-release@2.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.tags.outputs.date }}
-          body: >
+          body: |
             Aria2: ${{ steps.tags.outputs.aria2_tag }}
             AriaNg: ${{ steps.tags.outputs.ariang_tag }}
             webui-aria2: ${{ steps.tags.outputs.webui_sha }}

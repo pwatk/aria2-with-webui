@@ -11,6 +11,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Gather information
+        id: tags
+        run: |
+          echo "::set-output name=date::$(date +'%Y.%m.%d-%H%m%S')"
+          ARIA2_REPO=https://api.github.com/repos/aria2/aria2/releases/latest
+          echo "::set-output name=aria2_tag::$(curl -sX GET $ARIA2_REPO | awk '/tag_name/{print $4;exit}' FS='[""]' | sed 's/release-//')"
+          ARIANG_REPO=https://api.github.com/repos/mayswind/AriaNg/releases/latest
+          echo "::set-output name=ariang_tag::$(curl -sX GET $ARIANG_REPO | awk '/tag_name/{print $4;exit}' FS='[""]')"
+          WEBUI_REPO=https://api.github.com/repos/ziahamza/webui-aria2/commits/master
+          echo "::set-output name=webui_sha::$(curl -sX GET $WEBUI_REPO | awk '/sha/{print $4;exit}' FS='[""]')"
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
@@ -25,5 +35,16 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ghcr.io/pwatk/aria2-with-webui:latest
+          tags: |
+            ghcr.io/pwatk/aria2-with-webui:latest
+            ghcr.io/pwatk/aria2-with-webui:${{ steps.tags.outputs.date }}
           platforms: linux/amd64,linux/arm64/v8,linux/arm/v7
+      - name: Create new release
+        uses: meeDamian/github-release@2.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ steps.tags.outputs.date }}
+          body: |
+            Aria2: ${{ steps.tags.outputs.aria2_tag }}
+            AriaNg: ${{ steps.tags.outputs.ariang_tag }}
+            webui-aria2: ${{ steps.tags.outputs.webui_sha }}
