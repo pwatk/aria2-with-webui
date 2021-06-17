@@ -6,6 +6,7 @@ on:
     paths:
       - 'root/**'
       - 'Dockerfile'
+      - '.build_trigger'
   workflow_dispatch:
 jobs:
   build:
