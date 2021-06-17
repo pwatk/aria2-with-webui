@@ -22,7 +22,7 @@ jobs:
  #       if: steps.releases.outputs.ariang > steps.releases.outputs.repo || steps.releases.outputs.aria2 > steps.releases.outputs.repo || steps.releases.outputs.webui > steps.releases.outputs.repo
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
-        if: steps.releases.outputs.ariang > steps.releases.outputs.repo || steps.releases.outputs.aria2 > steps.releases.outputs.repo || steps.releases.outputs.webui > steps.releases.outputs.repo
+#        if: steps.releases.outputs.ariang > steps.releases.outputs.repo || steps.releases.outputs.aria2 > steps.releases.outputs.repo || steps.releases.outputs.webui > steps.releases.outputs.repo
         uses: docker/setup-buildx-action@v1
       - name: Login to GHCR
 #        if: steps.releases.outputs.ariang > steps.releases.outputs.repo || steps.releases.outputs.aria2 > steps.releases.outputs.repo || steps.releases.outputs.webui > steps.releases.outputs.repo
