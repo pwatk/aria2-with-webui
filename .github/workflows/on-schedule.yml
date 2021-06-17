@@ -46,7 +46,7 @@ jobs:
           platforms: linux/amd64,linux/arm64/v8,linux/arm/v7
       - name: Create new release
 #        if: steps.tags.outputs.aria2 > steps.tags.outputs.repo || steps.tags.outputs.ariang > steps.tags.outputs.repo || steps.tags.outputs.webui > steps.tags.outputs.repo
-      - uses: meeDamian/github-release@2.0
+        uses: meeDamian/github-release@2.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.tags.outputs.date }}
