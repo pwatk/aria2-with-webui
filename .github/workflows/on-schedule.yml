@@ -18,8 +18,11 @@ jobs:
           echo "::set-output name=webui::$(curl -sX GET $WEBUI_REPO | awk '/date/{print $4;exit}' FS='[""]')"
           THIS_REPO=https://api.github.com/repos/pwatk/docker-aria2-with-webui/commits/master
           echo "::set-output name=repo::$(curl -sX GET $THIS_REPO | awk '/date/{print $4;exit}' FS='[""]')"
-      - name: Build new image if required
+      - name: Checkout
+#        if: steps.releases.outputs.ariang > steps.releases.outputs.repo || steps.releases.outputs.aria2 > steps.releases.outputs.repo || steps.releases.outputs.webui > steps.releases.outputs.repo
         uses: actions/checkout@v2
+      - name: Build new image if required
+#        if: steps.releases.outputs.ariang > steps.releases.outputs.repo || steps.releases.outputs.aria2 > steps.releases.outputs.repo || steps.releases.outputs.webui > steps.releases.outputs.repo
         run: |
           date > .build_trigger
           git config user.name "GitHub Actions Bot"
