@@ -3,10 +3,10 @@ on:
   push:
     branches:
       - master
-    paths:
-      - 'trigger'
-      - 'root/**'
-      - 'Dockerfile'
+#    paths:
+#      - '.build_trigger'
+#      - 'root/**'
+#      - 'Dockerfile'
   workflow_dispatch:
 jobs:
   build:

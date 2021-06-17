@@ -24,9 +24,9 @@ jobs:
       - name: Build new image if required
 #        if: steps.releases.outputs.ariang > steps.releases.outputs.repo || steps.releases.outputs.aria2 > steps.releases.outputs.repo || steps.releases.outputs.webui > steps.releases.outputs.repo
         run: |
-          date > trigger
+          date > .build_trigger
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
-          git add trigger
+          git add .build_trigger
           git commit -m "Automated docker image build"
           git push origin master
