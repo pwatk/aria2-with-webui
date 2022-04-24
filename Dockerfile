@@ -26,6 +26,7 @@ RUN \
 	libxml2-dev \
 	nettle-dev \
 	sqlite-dev \
+	tar \
 	unzip \
 	zlib-dev && \
  echo "**** install runtime packages ****" && \
