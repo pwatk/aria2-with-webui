@@ -69,8 +69,8 @@ RUN \
  S6_RELEASE=$(curl -sX GET "https://api.github.com/repos/just-containers/s6-overlay/releases/latest" \
 	| awk '/tag_name/{print $4;exit}' FS='[""]') && \
  curl \
-	-o /tmp/s6-overlay-${S6_ARCH}.tar.gz -L \
-	https://github.com/just-containers/s6-overlay/releases/download/${S6_RELEASE}/s6-overlay-${S6_ARCH}.tar.gz && \
+	-o /tmp/s6-overlay-${S6_ARCH}.tar.xz -L \
+	https://github.com/just-containers/s6-overlay/releases/download/${S6_RELEASE}/s6-overlay-${S6_ARCH}.tar.xz && \
  tar xzf /tmp/s6-overlay-${S6_ARCH}.tar.gz -C / && \
  echo "**** install AriaNg ****" && \
  mkdir -p /app/AriaNg && \
