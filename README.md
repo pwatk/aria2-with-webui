@@ -1,27 +1,24 @@
-# Aria2 with a web interface
+# Aria2 with AriaNg web frontend
 
 ## Description
 
-[Aria2](https://github.com/aria2/aria2) is a command-line download utility that supports HTTP(S), FTP, SFTP and BitTorrent. [AriaNg](https://github.com/mayswind/AriaNg) and [webui-aria2](https://github.com/ziahamza/webui-aria2) are web interfaces making aria2 easier to use.
+[Aria2](https://github.com/aria2/aria2) is a command-line download utility that supports HTTP(S), FTP, SFTP and BitTorrent. [AriaNg](https://github.com/mayswind/AriaNg) is a modern web frontend making aria2 easier to use.
 
-This project expands on my contributions to (and borrows from) [onisuly/docker-aria2-with-webui](https://github.com/onisuly/docker-aria2-with-webui) as well as being influenced by the excellent images provided by [Linuxserver.io](https://www.linuxserver.io/).
-
-Features include: Choice of web interface, automatically updated BitTorrent trackers and [s6-overlay](https://github.com/just-containers/s6-overlay) to better manage multiple processes.
+This project expands on my contributions to (and borrows from) [onisuly/docker-aria2-with-webui](https://github.com/onisuly/docker-aria2-with-webui) as well as being influenced by the excellent images provided by [linuxserver.io](https://www.linuxserver.io/).
 
 ## [Docker Compose](https://docs.docker.com/compose/compose-file/compose-file-v3/)
 
 ```yaml
-version "3.8"
 services:
   aria2-with-webui:
     container_name: aria2-with-webui
     image: ghcr.io/pwatk/aria2-with-webui
     restart: unless-stopped
     ports:
-      - 80:80
-      - 6800:6800
-      - 6881-6999:6881-6999             # optional
-      - 6881-6999:6881-6999/udp         # optional
+      - "80:80"
+      - "6800:6800"
+      - "6881-6999:6881-6999"           # optional
+      - "6881-6999:6881-6999/udp"       # optional
     volumes:
       - /path/to/downloads:/data
       - /path/to/config:/config         # optional
@@ -29,15 +26,12 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/London
-      - FILE_ALLOCATION=none            # optional
+      - FILE_ALLOCATION=falloc          # optional
       - SECRET=rpc-secret               # optional
       - BT_TRACKER=false                # optional
       - BT_TRACKER_URL=http...          # optional
       - BT_SEEDING=false                # optional
-      - RPC_CERT=/path/to/fullchain.pem # optional
-      - RPC_KEY=/path/to/privkey.pem    # optional
       - IPV6=true                       # optional
-      - WEBUI=webui-aria2               # optional
 ```
 
 ## Port numbers
@@ -62,7 +56,8 @@ services:
 | `BT_TRACKER` | Enable or disable daily automatic updates of [BitTorrent trackers](https://aria2.github.io/manual/en/html/aria2c.html#cmdoption-bt-tracker "--bt-tracker=<URI>[,...]"). Available values: *true or false*. **Default: true** |
 | `BT_TRACKER_URL` | Specify a URL from which to download a BitTorrent trackers list (comma or newline seperated). **Default: [trackers_best.txt](https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt) from [ngosang/trackerslist](https://github.com/ngosang/trackerslist)**
 | `BT_SEEDING` | Enable or disable [BitTorrent seeding](https://aria2.github.io/manual/en/html/aria2c.html#cmdoption-seed-time "--seed-time=0"). Available values: *true or false*. **Default: true** |
-| `RPC_CERT` | [Location](https://docs.docker.com/storage/bind-mounts/) of [RPC certificate](https://aria2.github.io/manual/en/html/aria2c.html#cmdoption-rpc-certificate "--rpc-certificate=<FILE>"). It is recommended to use a reverse proxy to secure both Aria2 and AriaNg instead. **Default: undefined** |
-| `RPC_KEY` | [Location](https://docs.docker.com/storage/bind-mounts/) of [RPC private key](https://aria2.github.io/manual/en/html/aria2c.html#cmdoption-rpc-private-key "--rpc-private-key=<FILE>"). It is recommended to use a reverse proxy to secure both Aria2 and AriaNg instead. **Default: undefined** |
-| `IPV6` | Enable or disable IPv6 support. Available values: *true or false*. **Default: false** |
-| `WEBUI` | Specify which web interface to use. Available values: *AriaNg or webui-aria2*. **Default: AriaNg** |
+| `IPV6` | Enable or disable [IPv6](https://en.wikipedia.org/wiki/IPv6) support for both [Aria2](https://aria2.github.io/manual/en/html/aria2c.html#cmdoption-disable-ipv6) and the [web server](https://wiki.alpinelinux.org/wiki/Darkhttpd#man_darkhttpd). Available values: *true or false*. **Default: false** |
+
+## Notes
+
+If a secure (SSL/TLS) connection is required, the reverse proxy [SWAG](https://github.com/linuxserver/docker-swag) includes a [configuration file](https://github.com/linuxserver/reverse-proxy-confs) for this purpose.

@@ -21,14 +21,15 @@ list="$(wget -qO- "$url" | awk NF | sed ':a;N;s/\n/,/g;ta')"
 
 uuid="$(cat /proc/sys/kernel/random/uuid)"
 
-if [ -n "$SECRET" ]; then
-	token="$SECRET"
-elif [ -n "$SECRET_FILE" ] && [ -r "$SECRET_FILE" ]; then
+if [ -n "$SECRET_FILE" ] && [ -r "$SECRET_FILE" ]; then
 	token="$(cat "$SECRET_FILE")"
+elif [ -n "$SECRET" ]; then
+	token="$SECRET"
 fi
 
 json='{"jsonrpc":"2.0","id":"'$uuid'","method":"aria2.changeGlobalOption","params":["token:'$token'",{"bt-tracker":"'$list'"}]}'
 
+# attempt to detect if the user chooses to use rpc-secure instead of using a reverse proxy
 if [ -n "$(grep ^rpc-secure=true /config/aria2.conf)" ]; then
 	scheme="https"
 else

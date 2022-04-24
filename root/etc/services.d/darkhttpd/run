@@ -4,11 +4,5 @@ if [ "$IPV6" = "true" ]; then
 	ipv6="--ipv6"
 fi
 
-if [ "$WEBUI" = "webui-aria2" ]; then
-	dir=/app/webui-aria2
-else
-	dir=/app/AriaNg
-fi
-
 exec \
-	s6-setuidgid abc darkhttpd $dir --port 80 --no-listing --no-server-id $ipv6 >/dev/null 2>&1
+	s6-setuidgid abc darkhttpd /app/AriaNg --port 80 --no-listing --no-server-id $ipv6 >/dev/null 2>&1

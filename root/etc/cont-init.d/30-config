@@ -3,20 +3,11 @@
 if [ ! -f /config/aria2.conf ]; then
 	cp /defaults/aria2.conf /config/aria2.conf
 
-	if [ -n "$SECRET" ]; then
-		echo "rpc-secret=$SECRET" >> /config/aria2.conf
-	elif [ -n "$SECRET_FILE" ] && [ -r "$SECRET_FILE" ]; then
+  # prefer docker secret over environment variable
+	if [ -n "$SECRET_FILE" ] && [ -r "$SECRET_FILE" ]; then
 		echo "rpc-secret=$(cat "$SECRET_FILE")" >> /config/aria2.conf
-	fi
-
-	if [ -n "$RPC_CERT" ] && [ -n "$RPC_KEY" ]; then
-		if [ -r "$RPC_CERT" ] && [ -r "$RPC_KEY" ]; then
-			echo "rpc-secure=true" >> /config/aria2.conf 
-			echo "rpc-certificate=$RPC_CERT" >> /config/aria2.conf
-			echo "rpc-private-key=$RPC_KEY" >> /config/aria2.conf
-		else
-			echo "[cont-init.d] rpc-certificate or rpc-private-key inaccessible"
-		fi
+	elif [ -n "$SECRET" ]; then
+		echo "rpc-secret=$SECRET" >> /config/aria2.conf
 	fi
 
 	if  [ -n "$FILE_ALLOCATION" ]; then

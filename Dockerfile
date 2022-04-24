@@ -8,8 +8,7 @@ HOME="/root" \
 TERM="xterm" \
 BT_TRACKER="true" \
 BT_SEEDING="true" \
-IPV6="false" \
-WEBUI="AriaNg"
+IPV6="false"
 
 RUN \
  echo "**** install build packages ****" && \
@@ -81,11 +80,6 @@ RUN \
 	-o /tmp/AriaNg.zip -L \
 	https://github.com/mayswind/AriaNg/releases/download/${ARIANG_RELEASE}/AriaNg-${ARIANG_RELEASE}.zip && \
  unzip /tmp/AriaNg.zip -d /app/AriaNg && \
- echo "**** install webui-aria2 ****" && \
- git clone https://github.com/ziahamza/webui-aria2 /tmp/webui-aria2 && \
- cp -a /tmp/webui-aria2/docs /app/webui-aria2 && \
- cp -a /tmp/webui-aria2/favicon.ico /app/webui-aria2/favicon.ico && \
- sed -i "s|../favicon.ico|./favicon.ico|g" /app/webui-aria2/index.html && \
  echo "**** install aria2 ****" && \
  ARIA2_RELEASE=$(curl -sX GET "https://api.github.com/repos/aria2/aria2/releases/latest" \
 	| awk '/tag_name/{print $4;exit}' FS='[""]') && \
