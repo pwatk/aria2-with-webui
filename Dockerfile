@@ -26,9 +26,7 @@ RUN \
 	libxml2-dev \
 	nettle-dev \
 	sqlite-dev \
-	tar \
 	unzip \
-	xz \
 	zlib-dev && \
  echo "**** install runtime packages ****" && \
  apk add --no-cache \
@@ -68,13 +66,11 @@ RUN \
 	armv7l) S6_ARCH='armhf';; \
 	*) echo "!!! unsupported architecture - $QEMU_ARCH !!!"; exit 1 ;; \
  esac && \
- S6_RELEASE=$(curl -sX GET "https://api.github.com/repos/just-containers/s6-overlay/releases/latest" \
-	| awk '/tag_name/{print $4;exit}' FS='[""]') && \
+ S6_RELEASE="v2.2.0.3" && \
  curl \
-	-o /tmp/s6-overlay-${S6_ARCH}.tar.xz -L \
-	https://github.com/just-containers/s6-overlay/releases/download/${S6_RELEASE}/s6-overlay-${S6_ARCH}.tar.xz && \
- xz -d /tmp/s6-overlay-${S6_ARCH}.tar.xz && \
- tar xf /tmp/s6-overlay-${S6_ARCH}.tar -C / && \
+	-o /tmp/s6-overlay-${S6_ARCH}.tar.gz -L \
+	https://github.com/just-containers/s6-overlay/releases/download/${S6_RELEASE}/s6-overlay-${S6_ARCH}.tar.gz && \
+ tar xf /tmp/s6-overlay-${S6_ARCH}.tar.gz -C / && \
  echo "**** install AriaNg ****" && \
  mkdir -p /app/AriaNg && \
  ARIANG_RELEASE=$(curl -sX GET "https://api.github.com/repos/mayswind/AriaNg/releases/latest" \
