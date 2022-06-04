@@ -5,9 +5,9 @@ if [ ! -f /config/aria2.conf ]; then
 
   # prefer docker secret over environment variable
 	if [ -n "$SECRET_FILE" ] && [ -r "$SECRET_FILE" ]; then
-		echo "rpc-secret=$(cat "$SECRET_FILE")" >> /config/aria2.conf
+		sed -i "/rpc-secret/s|^.*$|rpc-secret=$(cat "$SECRET_FILE")|" /config/aria2.conf
 	elif [ -n "$SECRET" ]; then
-		echo "rpc-secret=$SECRET" >> /config/aria2.conf
+		sed -i "/rpc-secret/s|^.*$|rpc-secret=$SECRET|" /config/aria2.conf
 	fi
 
 	if  [ -n "$FILE_ALLOCATION" ]; then
