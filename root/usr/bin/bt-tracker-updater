@@ -1,23 +1,20 @@
 #!/bin/sh
 
+BT_TRACKER=${BT_TRACKER:-true}
+BT_TRACKER_URL=${BT_TRACKER_URL:-https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt}
+
 if [ "$BT_TRACKER" = "false" ]; then
 	exit 0
 fi
 
-if [ -n "$BT_TRACKER_URL" ]; then
-	url="$BT_TRACKER_URL"
-else
-	url="https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt"
-fi
-
-wget --spider "$url" 2>/dev/null
+wget --spider "$BT_TRACKER_URL" 2>/dev/null
 
 if [ $? -ne 0 ]; then
-	echo "$(date +'%Y-%m-%d %H:%M:%S') Unavailable: $url" > /config/log/bt-tracker/last.log
+	echo "$(date +'%Y-%m-%d %H:%M:%S') bt-tracker-updater: URL unavailable [$BT_TRACKER_URL]"
 	exit 1
 fi
 
-list="$(wget -qO- "$url" | awk NF | sed ':a;N;s/\n/,/g;ta')"
+list="$(wget -qO- "$BT_TRACKER_URL" | awk NF | sed ':a;N;s/\n/,/g;ta')"
 
 uuid="$(cat /proc/sys/kernel/random/uuid)"
 
@@ -40,9 +37,9 @@ curl --silent --insecure --header "Content-type: application/json" --data "$json
 
 exitcode=$?
 if [ $exitcode -eq 0 ]; then
-	echo "$(date +'%Y-%m-%d %H:%M:%S') Successfull" > /config/log/bt-tracker/last.log
+	echo "$(date +'%Y-%m-%d %H:%M:%S') bt-tracker-updater: Successfull"
 	exit 0
 else
-	echo "$(date +'%Y-%m-%d %H:%M:%S') Error [$exitcode]" > /config/log/bt-tracker/last.log
+	echo "$(date +'%Y-%m-%d %H:%M:%S') bt-tracker-updater: Error [$exitcode]"
 	exit 1
 fi
