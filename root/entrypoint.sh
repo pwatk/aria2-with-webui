@@ -1,8 +1,8 @@
 #!/bin/bash
 
 TZ=${TZ:-UTC}
-PUID=${PUID:-1000}
-PGID=${PGID:-1000}
+PUID=${PUID:-911}
+PGID=${PGID:-911}
 BT_SEEDING=${BT_SEEDING:-true}
 IPV6=${IPV6:-false}
 
