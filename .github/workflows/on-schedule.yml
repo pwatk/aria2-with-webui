@@ -10,7 +10,7 @@ jobs:
       - name: Gather information
         id: tags
         run: |
-          echo "::set-output name=date::$(date +'%Y.%m.%d-%H%m%S')"
+          echo "::set-output name=date::$(date +'%y%m%d%H%M%S')"
           ARIA2_REPO=https://api.github.com/repos/aria2/aria2/releases/latest
           echo "::set-output name=aria2::$(curl -sX GET $ARIA2_REPO | awk '/published_at/{print $4;exit}' FS='[""]')"
           echo "::set-output name=aria2_tag::$(curl -sX GET $ARIA2_REPO | awk '/tag_name/{print $4;exit}' FS='[""]' | sed 's/release-//')"
@@ -47,6 +47,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.tags.outputs.date }}
+          name: Aria2 with WebUI
           body: |
             Aria2: ${{ steps.tags.outputs.aria2_tag }}
             AriaNg: ${{ steps.tags.outputs.ariang_tag }}
