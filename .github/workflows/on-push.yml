@@ -42,7 +42,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.tags.outputs.date }}
-          name: Aria2 with WebUI
+          name: ${{ steps.tags.outputs.date }}
           body: |
             Aria2: ${{ steps.tags.outputs.aria2_tag }}
             AriaNg: ${{ steps.tags.outputs.ariang_tag }}
