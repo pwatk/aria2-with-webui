@@ -115,4 +115,4 @@ else
 fi
 
 # start Aria2
-su-exec $PUID:$PGID aria2c --conf-path=/config/aria2.conf --log=/config/aria2.log >/dev/null 2>&1
+exec su-exec $PUID:$PGID aria2c --conf-path=/config/aria2.conf --log=/config/aria2.log >/dev/null 2>&1
