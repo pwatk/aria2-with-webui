@@ -22,10 +22,8 @@ RUN \
 	zlib-dev && \
  echo "**** Install runtime packages ****" && \
  apk add --no-cache \
-	bash \
 	c-ares \
 	ca-certificates \
-	coreutils \
 	curl \
 	darkhttpd \
 	gnutls \

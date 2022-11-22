@@ -7,10 +7,10 @@ if [ "$BT_TRACKER" = "false" ]; then
 	exit 0
 fi
 
-wget --spider "$BT_TRACKER_URL" 2>/dev/null
+wget --spider -q "$BT_TRACKER_URL"
 
 if [ $? -ne 0 ]; then
-	echo "$(date +'%Y-%m-%d %H:%M:%S') bt-tracker-updater: URL unavailable [$BT_TRACKER_URL]"
+	echo "$(date +'%Y-%m-%d %H:%M:%S') URL does not exist [$BT_TRACKER_URL]" > /config/bt-tracker-updater.log
 	exit 1
 fi
 
@@ -33,13 +33,6 @@ else
 	scheme="http"
 fi
 
-curl --silent --insecure --header "Content-type: application/json" --data "$json" "${scheme}://localhost:6800/jsonrpc" >/dev/null 2>&1
+output="$(curl --silent --insecure --header "Content-type: application/json" --data "$json" "${scheme}://localhost:6800/jsonrpc")"
 
-exitcode=$?
-if [ $exitcode -eq 0 ]; then
-	echo "$(date +'%Y-%m-%d %H:%M:%S') bt-tracker-updater: Successfull"
-	exit 0
-else
-	echo "$(date +'%Y-%m-%d %H:%M:%S') bt-tracker-updater: Error [$exitcode]"
-	exit 1
-fi
+echo "$(date +'%Y-%m-%d %H:%M:%S') $output" > /config/bt-tracker-updater.log
