@@ -82,16 +82,24 @@ if [ ! -f /config/aria2.conf ]; then
 	fi
 fi
 
+# fix permissions
 touch \
+	/config/aria2.log \
 	/config/aria2.session \
+	/config/bt-tracker-updater.log \
 	/config/netrc
 
 chown -R $PUID:$PGID /config
+
 chmod 0600 /config/netrc
+chmod 0640 /config/aria2.conf
+chmod 0664 /config/bt-tracker-updater.log
+chmod 0755 /usr/bin/bt-tracker-updater
 
 # start daily cron job to update BitTorrent trackers
-chmod 0755 /usr/bin/bt-tracker-updater
 ln -sf /usr/bin/bt-tracker-updater /etc/periodic/daily/bt-tracker-updater
+
+addgroup cron aria2
 
 su-exec cron crond -l2 -b
 

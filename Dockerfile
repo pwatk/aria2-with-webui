@@ -33,8 +33,8 @@ RUN \
 	libxml2 \	
 	nettle \
 	sqlite-libs \
-	tzdata \
 	su-exec \
+	tzdata \
 	zlib && \
  echo "**** Create directories ****" && \
  mkdir -p \

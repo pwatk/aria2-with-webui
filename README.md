@@ -61,6 +61,6 @@ services:
 | `IPV6` | Enable or disable [IPv6](https://en.wikipedia.org/wiki/IPv6) support for both [Aria2](https://aria2.github.io/manual/en/html/aria2c.html#cmdoption-disable-ipv6) and the [web server](https://wiki.alpinelinux.org/wiki/Darkhttpd#man_darkhttpd). Available values: *true or false*. **Default: false** |
 
 ## Notes
-When using a Docker secret (see SECRET_FILE variable) ensure the file is world readable else the script responsible for updating BitTorrent trackers will fail. The folder containing this file can have more restrictive permissions for better security on the host.
+When using a Docker secret (see `SECRET_FILE`) ensure the file is group (see `PGID`) or world readable else the BitTorrent trackers update script will fail.
 
 If a secure (SSL/TLS) connection is required, the reverse proxy [SWAG](https://github.com/linuxserver/docker-swag) includes a [configuration file](https://github.com/linuxserver/reverse-proxy-confs) for this purpose.
