@@ -6,7 +6,7 @@
 
 This project expands on my contributions to (and borrows from) [onisuly/docker-aria2-with-webui](https://github.com/onisuly/docker-aria2-with-webui) as well as being influenced by the excellent images provided by [linuxserver.io](https://www.linuxserver.io/).
 
-## [Docker Compose](https://docs.docker.com/compose/compose-file/compose-file-v3/)
+## [Docker Compose](https://docs.docker.com/compose/compose-file/)
 
 ```yaml
 services:
@@ -54,7 +54,7 @@ services:
 | `TZ` | Specify a [timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) to use e.g. Europe/London. **Default: undefined** |
 | `FILE_ALLOCATION` | Sets the [file allocation](https://aria2.github.io/manual/en/html/aria2c.html#cmdoption-file-allocation "--file-allocation=<METHOD>") method. Available values: *none, prealloc, trunc or falloc*. **Default: undefined** |
 | `SECRET` | Set [RPC secret](https://aria2.github.io/manual/en/html/aria2c.html#cmdoption-rpc-secret "--rpc-secret=<TOKEN>") authorization token (overridden by SECRET_FILE). **Default: undefined** |
-| `SECRET_FILE` | Set [RPC secret](https://aria2.github.io/manual/en/html/aria2c.html#cmdoption-rpc-secret "--rpc-secret=<TOKEN>") authorization token using [Docker secrets](https://docs.docker.com/compose/compose-file/compose-file-v3/#secrets). e.g. /run/secrets/aria2-rpc-secret. **Default: undefined** |
+| `SECRET_FILE` | Set [RPC secret](https://aria2.github.io/manual/en/html/aria2c.html#cmdoption-rpc-secret "--rpc-secret=<TOKEN>") authorization token using [Docker secrets](https://docs.docker.com/compose/compose-file/#secrets). e.g. /run/secrets/aria2-rpc-secret. **Default: undefined** |
 | `BT_TRACKER` | Enable or disable daily automatic updates of [BitTorrent trackers](https://aria2.github.io/manual/en/html/aria2c.html#cmdoption-bt-tracker "--bt-tracker=<URI>[,...]"). Available values: *true or false*. **Default: true** |
 | `BT_TRACKER_URL` | Specify a URL from which to download a BitTorrent trackers list (comma or newline seperated). **Default: [trackers_best.txt](https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt) from [ngosang/trackerslist](https://github.com/ngosang/trackerslist)**
 | `BT_SEEDING` | Enable or disable [BitTorrent seeding](https://aria2.github.io/manual/en/html/aria2c.html#cmdoption-seed-time "--seed-time=0"). Available values: *true or false*. **Default: true** |
