@@ -13,7 +13,7 @@ jobs:
           echo "::set-output name=date::$(date +'%y%m%d%H%M%S')"
           ARIA2_REPO=https://api.github.com/repos/aria2/aria2/releases/latest
           echo "::set-output name=aria2::$(curl -sX GET $ARIA2_REPO | awk '/published_at/{print $4;exit}' FS='[""]')"
-          echo "::set-output name=aria2_tag::$(curl -sX GET $ARIA2_REPO | awk '/tag_name/{print $4;exit}' FS='[""]' | sed 's/release-//')"
+          echo "::set-output name=aria2_tag::$(curl -sX GET $ARIA2_REPO | awk '/tag_name/{sub(/release-/,"");print $4;exit}' FS='[""]')"
           ARIANG_REPO=https://api.github.com/repos/mayswind/AriaNg/releases/latest
           echo "::set-output name=ariang::$(curl -sX GET $ARIANG_REPO | awk '/published_at/{print $4;exit}' FS='[""]')"
           echo "::set-output name=ariang_tag::$(curl -sX GET $ARIANG_REPO | awk '/tag_name/{print $4;exit}' FS='[""]')"

@@ -30,7 +30,8 @@ RUN \
 	libgcc \
 	libssh2 \
 	libstdc++ \
-	libxml2 \	
+	libxml2 \
+	logrotate \
 	nettle \
 	sqlite-libs \
 	su-exec \
@@ -38,7 +39,7 @@ RUN \
 	zlib && \
  echo "**** Create directories ****" && \
  mkdir -p \
-	/config \
+	/config/log \
 	/data \
 	/www && \
  echo "**** Install AriaNg ****" && \
