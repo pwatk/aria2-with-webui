@@ -70,7 +70,7 @@ RUN \
 		--disable-nls \
 		--with-ca-bundle=/etc/ssl/certs/ca-certificates.crt && \
 	 make -j $(getconf _NPROCESSORS_ONLN) && \	
-	 install -Dm 0755 src/aria2c /usr/bin/aria2c \
+	 install -Dm 0755 src/aria2c /usr/local/bin/aria2c \
  ) && \
  echo "**** Cleanup ****" && \
  rm -rf /tmp/* && \
@@ -83,4 +83,4 @@ EXPOSE 80 6800 6881-6999 6881-6999/udp
 
 ENTRYPOINT ["/entrypoint.sh"]
 
-HEALTHCHECK --interval=5s --timeout=1s CMD ps | grep darkhttpd | grep -v grep || exit 1
+HEALTHCHECK --interval=10s --timeout=5s --start-period=20s CMD /usr/local/bin/healthcheck

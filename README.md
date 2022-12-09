@@ -32,8 +32,6 @@ services:
       - BT_TRACKER_URL=http...          # optional
       - BT_SEEDING=false                # optional
       - IPV6=true                       # optional
-    healthcheck:
-      disable: true                     # optional
 ```
 
 ## Port numbers
