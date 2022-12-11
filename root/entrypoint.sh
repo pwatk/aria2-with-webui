@@ -11,7 +11,7 @@ echo $TZ > /etc/timezone
 # add user and group
 getent group $PGID >/dev/null 2>&1 || addgroup -g $PGID aria2
 group="$(getent group $PGID | cut -d: -f1)"
-getent passwd $PUID >/dev/null 2>&1 || adduser -u $PUID -G $group -h /config -s /sbin/nologin -g Aria2 -D aria2
+getent passwd $PUID >/dev/null 2>&1 || adduser -u $PUID -G $group -h /config -H -S -g Aria2 -D aria2
 user="$(getent passwd $PUID | cut -d: -f1)"
 
 # create logrotate config

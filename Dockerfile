@@ -37,12 +37,8 @@ RUN \
 	su-exec \
 	tzdata \
 	zlib && \
- echo "**** Create directories ****" && \
- mkdir -p \
-	/config \
-	/data \
-	/www && \
  echo "**** Install AriaNg ****" && \
+ mkdir -p /www && \
  ARIANG_RELEASE=$(curl -sX GET "https://api.github.com/repos/mayswind/AriaNg/releases/latest" \
 	| awk '/tag_name/{print $4;exit}' FS='[""]') && \
  curl \
