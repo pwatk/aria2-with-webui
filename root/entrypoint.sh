@@ -97,13 +97,15 @@ if [ ! -f /config/aria2.conf ]; then
 	fi
 fi
 
-# fix permissions
+mkdir -p /config/log
+
 touch \
 	/config/aria2.session \
 	/config/netrc \
 	/config/log/aria2.log \
 	/config/log/bt-tracker.log
 
+# fix permissions
 chown -R $PUID:$PGID /config
 
 chmod 0600 /config/netrc

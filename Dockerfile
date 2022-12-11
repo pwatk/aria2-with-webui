@@ -39,7 +39,7 @@ RUN \
 	zlib && \
  echo "**** Create directories ****" && \
  mkdir -p \
-	/config/log \
+	/config \
 	/data \
 	/www && \
  echo "**** Install AriaNg ****" && \
