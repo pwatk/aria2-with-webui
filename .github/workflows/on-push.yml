@@ -14,7 +14,7 @@ jobs:
       - name: Gather information
         id: tags
         run: |
-          echo "::set-output name=date::$(date +'%y%m%d%H%M%S')"
+          echo "::set-output name=date::$(date +'%y.%j-%H')"
           ARIA2_REPO=https://api.github.com/repos/aria2/aria2/releases/latest
           echo "::set-output name=aria2_tag::$(curl -sX GET $ARIA2_REPO | awk '/tag_name/{print $4;exit}' FS='[""]' | sed 's/release-//')"
           ARIANG_REPO=https://api.github.com/repos/mayswind/AriaNg/releases/latest
