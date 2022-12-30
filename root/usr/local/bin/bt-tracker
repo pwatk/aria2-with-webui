@@ -9,7 +9,7 @@ fi
 wget --spider -q "$BT_TRACKER_URL"
 
 if [ $? -ne 0 ]; then
-	echo "$(date +'%Y-%m-%d %H:%M:%S') bt-tracker: URL does not exist [$BT_TRACKER_URL]" > /config/log/bt-tracker.log
+	echo "$(date +'%Y-%m-%d %H:%M:%S') URL does not exist: $BT_TRACKER_URL" > /config/log/bt-tracker.log
 	exit 1
 fi
 
@@ -34,4 +34,10 @@ fi
 
 output="$(curl --silent --insecure --header "Content-type: application/json" --data "$json" "${scheme}://localhost:6800/jsonrpc")"
 
-echo "$(date +'%Y-%m-%d %H:%M:%S') bt-tracker: $output" > /config/log/bt-tracker.log
+exit=$?
+if [ $exit -ne 0 ]; then
+	echo "$(date +'%Y-%m-%d %H:%M:%S') Error [$exit]" > /config/log/bt-tracker.log
+	exit 1
+fi
+
+echo "$(date +'%Y-%m-%d %H:%M:%S') $(echo "$output" | sed 's/["{}]//g;s/,/ /g')" > /config/log/bt-tracker.log
