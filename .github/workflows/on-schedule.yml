@@ -10,15 +10,15 @@ jobs:
       - name: Gather information
         id: tags
         run: |
-          echo "::set-output name=date::$(date +'%y.%j-%H')"
+          echo "date=$(date +'%y.%j-%H')" >> $GITHUB_OUTPUT
           ARIA2_REPO=https://api.github.com/repos/aria2/aria2/releases/latest
-          echo "::set-output name=aria2::$(curl -sX GET $ARIA2_REPO | awk '/published_at/{print $4;exit}' FS='[""]')"
-          echo "::set-output name=aria2_tag::$(curl -sX GET $ARIA2_REPO | awk '/tag_name/{sub(/release-/,"");print $4;exit}' FS='[""]')"
+          echo "aria2=$(curl -sX GET $ARIA2_REPO | awk '/published_at/{print $4;exit}' FS='[""]')" >> $GITHUB_OUTPUT
+          echo "aria2_tag=$(curl -sX GET $ARIA2_REPO | awk '/tag_name/{sub(/release-/,"");print $4;exit}' FS='[""]')" >> $GITHUB_OUTPUT
           ARIANG_REPO=https://api.github.com/repos/mayswind/AriaNg/releases/latest
-          echo "::set-output name=ariang::$(curl -sX GET $ARIANG_REPO | awk '/published_at/{print $4;exit}' FS='[""]')"
-          echo "::set-output name=ariang_tag::$(curl -sX GET $ARIANG_REPO | awk '/tag_name/{print $4;exit}' FS='[""]')"
+          echo "ariang=$(curl -sX GET $ARIANG_REPO | awk '/published_at/{print $4;exit}' FS='[""]')" >> $GITHUB_OUTPUT
+          echo "ariang_tag=$(curl -sX GET $ARIANG_REPO | awk '/tag_name/{print $4;exit}' FS='[""]')" >> $GITHUB_OUTPUT
           THIS_REPO=https://api.github.com/repos/pwatk/docker-aria2-with-webui/releases/latest
-          echo "::set-output name=repo::$(curl -sX GET $THIS_REPO | awk '/published_at/{print $4;exit}' FS='[""]')"
+          echo "repo=$(curl -sX GET $THIS_REPO | awk '/published_at/{print $4;exit}' FS='[""]')" >> $GITHUB_OUTPUT
       - name: Set up QEMU
         if: steps.tags.outputs.aria2 > steps.tags.outputs.repo || steps.tags.outputs.ariang > steps.tags.outputs.repo
         uses: docker/setup-qemu-action@v1

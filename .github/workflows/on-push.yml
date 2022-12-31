@@ -14,11 +14,11 @@ jobs:
       - name: Gather information
         id: tags
         run: |
-          echo "::set-output name=date::$(date +'%y.%j-%H')"
+          echo "date=$(date +'%y.%j-%H')" >> $GITHUB_OUTPUT
           ARIA2_REPO=https://api.github.com/repos/aria2/aria2/releases/latest
-          echo "::set-output name=aria2_tag::$(curl -sX GET $ARIA2_REPO | awk '/tag_name/{print $4;exit}' FS='[""]' | sed 's/release-//')"
+          echo "aria2_tag=$(curl -sX GET $ARIA2_REPO | awk '/tag_name/{print $4;exit}' FS='[""]' | sed 's/release-//')" >> $GITHUB_OUTPUT
           ARIANG_REPO=https://api.github.com/repos/mayswind/AriaNg/releases/latest
-          echo "::set-output name=ariang_tag::$(curl -sX GET $ARIANG_REPO | awk '/tag_name/{print $4;exit}' FS='[""]')"
+          echo "ariang_tag=$(curl -sX GET $ARIANG_REPO | awk '/tag_name/{print $4;exit}' FS='[""]')" >> $GITHUB_OUTPUT
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
