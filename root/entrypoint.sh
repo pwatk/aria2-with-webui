@@ -20,7 +20,6 @@ cat <<- EOF > /etc/logrotate.d/aria2
 	    daily
 	    rotate 7
 	    missingok
-	    notifempty
 	    compress
 	    delaycompress
 	    nodateext
@@ -41,7 +40,6 @@ if [ ! -f /config/aria2.conf ]; then
 		
 		log-level=notice
 		
-		enable-http-pipelining=true
 		max-concurrent-downloads=3
 		max-connection-per-server=10
 		min-split-size=10M
