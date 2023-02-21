@@ -9,7 +9,7 @@ fi
 wget --spider -q "$BT_TRACKER_URL"
 
 if [ $? -ne 0 ]; then
-	echo "$(date +'%Y-%m-%d %H:%M:%S') URL does not exist: $BT_TRACKER_URL" > /config/log/bt-tracker.log
+	echo "$(date +'%Y-%m-%d %H:%M:%S') bittorrent trackers update failed - url does not exist" > /config/log/bt-tracker.log
 	exit 1
 fi
 
@@ -32,12 +32,11 @@ else
 	scheme="http"
 fi
 
-output="$(curl --silent --insecure --header "Content-type: application/json" --data "$json" "${scheme}://localhost:6800/jsonrpc")"
+httpcode="$(curl --silent --output /dev/null --write-out "%{http_code}" --insecure --header "Content-type: application/json" --data "$json" "${scheme}://localhost:6800/jsonrpc")"
 
-exit=$?
-if [ $exit -ne 0 ]; then
-	echo "$(date +'%Y-%m-%d %H:%M:%S') Error [$exit]" > /config/log/bt-tracker.log
+if [ $httpcode -eq 200 ]; then
+	echo "$(date +'%Y-%m-%d %H:%M:%S') bittorrent trackers updated successfully" > /config/log/bt-tracker.log
+else
+	echo "$(date +'%Y-%m-%d %H:%M:%S') bittorrent trackers update failed - http status code: $httpcode" > /config/log/bt-tracker.log
 	exit 1
 fi
-
-echo "$(date +'%Y-%m-%d %H:%M:%S') $(echo "$output" | sed 's/["{}]//g;s/,/ /g')" > /config/log/bt-tracker.log
