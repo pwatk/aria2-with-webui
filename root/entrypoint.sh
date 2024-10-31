@@ -1,8 +1,8 @@
 #!/bin/sh
 
 TZ=${TZ:-UTC}
-PUID=${PUID:-911}
-PGID=${PGID:-911}
+PUID=${PUID:-1000}
+PGID=${PGID:-1000}
 
 # set timezone
 ln -snf /usr/share/zoneinfo/$TZ /etc/localtime
@@ -11,7 +11,7 @@ echo $TZ > /etc/timezone
 # add user and group
 getent group $PGID >/dev/null 2>&1 || addgroup -g $PGID aria2
 group="$(getent group $PGID | cut -d: -f1)"
-getent passwd $PUID >/dev/null 2>&1 || adduser -u $PUID -G $group -h /config -H -S -g Aria2 -D aria2
+getent passwd $PUID >/dev/null 2>&1 || adduser -u $PUID -G $group -h /config -H -S -g aria2 -D aria2
 user="$(getent passwd $PUID | cut -d: -f1)"
 
 # create logrotate config
@@ -89,19 +89,14 @@ if [ ! -f /config/aria2.conf ]; then
 	if [ -n "$IPV6" ] && [ "$IPV6" = "true" ]; then
 		sed -i "/disable-ipv6/s|^.*$|disable-ipv6=false|" /config/aria2.conf
 	fi
-
-	if [ -n "$BT_SEEDING" ] && [ "$BT_SEEDING" = "false" ]; then
-		sed -i "/seed-time/s|^.*$|seed-time=0|" /config/aria2.conf
-	fi
 fi
 
-mkdir -p /config/log
+mkdir -p /config
 
 touch \
 	/config/aria2.session \
 	/config/netrc \
-	/config/log/aria2.log \
-	/config/log/bt-tracker.log
+	/config/aria2.log
 
 # fix permissions
 chown -R $PUID:$PGID /config
@@ -109,10 +104,10 @@ chown -R $PUID:$PGID /config
 chmod 0600 /config/netrc
 chmod 0640 /config/aria2.conf
 chmod 0644 /etc/logrotate.d/aria2
-chmod 0755 /usr/local/bin/bt-tracker
+chmod 0755 /usr/local/bin/bt-tracker-update
 
 # start daily cron job to update BitTorrent trackers
-ln -sf /usr/local/bin/bt-tracker /etc/periodic/daily/bt-tracker
+ln -sf /usr/local/bin/bt-tracker-update /etc/periodic/daily/bt-tracker-update
 
 crond -l2 -b
 
@@ -121,7 +116,7 @@ crond -l2 -b
 		sleep 5s
 	done
 
-	bt-tracker
+	bt-tracker-update
 ) &
 
 # start AriaNg
@@ -136,4 +131,4 @@ else
 fi
 
 # start Aria2
-exec su-exec $PUID:$PGID aria2c --conf-path=/config/aria2.conf --log=/config/log/aria2.log >/dev/null 2>&1
+exec su-exec $PUID:$PGID aria2c --conf-path=/config/aria2.conf --log=/config/aria2.log >/dev/null 2>&1

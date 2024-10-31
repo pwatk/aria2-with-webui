@@ -1,0 +1,35 @@
+#!/bin/sh
+
+ARIA2_CONFIG=${ARIA2_CONFIG:-/config/aria2.conf}
+
+[ -z "$BT_TRACKER_URL" ] &&	exit 1
+
+wget --spider -q "$BT_TRACKER_URL" 2>/dev/null
+
+[ $? -ne 0 ] && exit 1
+
+list="$(wget -qO- "$BT_TRACKER_URL" | awk NF | sed ':a;N;s/\n/,/g;ta')"
+
+uuid="$(cat /proc/sys/kernel/random/uuid)"
+
+# docker secret
+if [ -n "$SECRET_FILE" ] && [ -r "$SECRET_FILE" ]; then
+	token="$(cat "$SECRET_FILE")"
+elif [ -n "$SECRET" ]; then
+	token="$SECRET"
+fi
+
+json='{"jsonrpc":"2.0","id":"'$uuid'","method":"aria2.changeGlobalOption","params":["token:'$token'",{"bt-tracker":"'$list'"}]}'
+
+# attempt to detect if the user chooses to use rpc-secure instead of using a reverse proxy
+if [ -n "$(grep ^rpc-secure=true ${ARIA2_CONFIG})" ]; then
+	scheme="https"
+else
+	scheme="http"
+fi
+
+httpcode="$(curl --silent --output /dev/null --write-out "%{http_code}" --insecure --header "Content-type: application/json" --data "$json" "${scheme}://localhost:6800/jsonrpc")"
+
+[ $httpcode -ne 200 ] && exit 1
+
+exit 0

@@ -5,4 +5,3 @@ ps -o comm | grep crond || exit 1
 
 # darkhttpd
 ps -o comm | grep darkhttpd || exit 1
-
