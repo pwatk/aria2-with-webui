@@ -10,7 +10,7 @@
 services:
   aria2-with-webui:
     container_name: aria2-with-webui
-    image: pwatk/aria2-with-webui
+    image: ghcr.io/pwatk/aria2-with-webui
     build: https://github.com/pwatk/docker-aria2-with-webui.git
     restart: unless-stopped
     ports:
