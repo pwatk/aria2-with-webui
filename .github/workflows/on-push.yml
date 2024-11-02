@@ -35,9 +35,4 @@ jobs:
             ghcr.io/pwatk/aria2-with-webui:latest
             ghcr.io/pwatk/aria2-with-webui:${{ steps.tags.outputs.epoch }}
           platforms: linux/amd64,linux/arm64,linux/arm/v7
-      - name: Create new release
-        uses: meeDamian/github-release@2.0
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ steps.tags.outputs.epoch }}
-          name: ${{ steps.tags.outputs.epoch }}
+
