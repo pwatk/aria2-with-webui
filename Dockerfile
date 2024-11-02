@@ -1,6 +1,8 @@
 FROM alpine
 
-LABEL maintainer pwatk
+LABEL org.opencontainers.image.vendor="pwatk"
+LABEL org.opencontainers.image.title="aria2-with-webui"
+LABEL org.opencontainers.image.description="Aria2 with AriaNg web frontend"
 
 RUN \
 	apk add --no-cache \

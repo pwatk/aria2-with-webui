@@ -2,7 +2,7 @@
 
 ARIA2_CONFIG=${ARIA2_CONFIG:-/config/aria2.conf}
 
-[ -z "$BT_TRACKER_URL" ] &&	exit 0
+[ -z "$BT_TRACKER_URL" ] && exit 0
 
 wget --spider -q "$BT_TRACKER_URL" 2>/dev/null
 
