@@ -38,6 +38,7 @@ if [ ! -f /config/aria2.conf ]; then
 		dht-file-path6=/config/dht6.dat
 		netrc-path=/config/netrc
 		
+		log=/config/aria2.log
 		log-level=notice
 		
 		max-concurrent-downloads=3
@@ -131,4 +132,4 @@ else
 fi
 
 # start Aria2
-exec su-exec $PUID:$PGID aria2c --conf-path=/config/aria2.conf --log=/config/aria2.log >/dev/null 2>&1
+exec su-exec $PUID:$PGID aria2c --conf-path=/config/aria2.conf >/dev/null 2>&1
